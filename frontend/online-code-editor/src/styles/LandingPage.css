@@ -1,0 +1,57 @@
+/* LandingPage.css */
+
+/* Simple fade-in animation */
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .landing-container {
+    /* Fade in the container */
+    animation: fadeIn 0.8s ease-out 0.2s forwards;
+    opacity: 0;
+  
+    /* Basic layout */
+    text-align: center;
+    padding: 50px;
+    background: #f5f5f5;
+    min-height: 100vh;
+  }
+  
+  .landing-container h1 {
+    margin-bottom: 20px;
+  }
+  
+  .landing-container p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  /* Buttons fade in slightly later */
+  .landing-buttons {
+    animation: fadeIn 0.8s ease-out 0.4s forwards;
+    opacity: 0;
+    margin-top: 30px;
+  }
+  
+  .landing-buttons a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 12px 24px;
+    text-decoration: none;
+    background-color: #0066cc;
+    color: #fff;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .landing-buttons a:hover {
+    background-color: #004999;
+  }
+  
