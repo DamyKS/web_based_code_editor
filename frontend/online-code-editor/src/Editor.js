@@ -206,7 +206,7 @@ function CodeEditor() {
       </div>
       
       <footer className="editor-footer">
-        <p>Code Editor - Built with React and Monaco Editor</p>
+        <p>Code Editor - Built with React , Django and Monaco Editor</p>
       </footer>
     </div>
   );
