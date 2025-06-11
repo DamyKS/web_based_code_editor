@@ -16,6 +16,7 @@ class CodeExecutionView(APIView):
             print("langusge:  ", language)
             task = execute_code.delay(code, language)
             # For simplicity, wait for the result (in production, use polling or websockets)
-            result = task.get(timeout=10)
+            result = task.get(timeout=40)
+            print("result", result)
             return Response({"output": result}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
