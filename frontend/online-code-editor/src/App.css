@@ -9,6 +9,8 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #1e1e1e;
   color: #f0f0f0;
+  /* Added for smooth transitions during expansion */
+  transition: overflow 0.3s ease;
 }
 
 /* Layout */
@@ -16,6 +18,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden; /* Ensure no overflow on the main container */
 }
 
 /* Header */
@@ -27,6 +30,7 @@ body {
   padding: 0.8rem 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   z-index: 100;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .logo h1 {
@@ -41,7 +45,8 @@ body {
 }
 
 .theme-selector,
-.run-button {
+.run-button,
+.language-selector { /* Added language-selector here */
   padding: 0.5rem 1rem;
   border-radius: 4px;
   border: none;
@@ -51,7 +56,8 @@ body {
   transition: all 0.2s ease;
 }
 
-.theme-selector {
+.theme-selector,
+.language-selector {
   background-color: #3a3a3a;
   color: #f0f0f0;
 }
@@ -73,8 +79,16 @@ body {
 /* Editor Panels Container */
 .editor-panels {
   display: flex;
-  height: 50%;
+  height: 50%; /* Default height */
   border-bottom: 1px solid #3a3a3a;
+  transition: height 0.3s ease-out; /* Smooth transition for height change */
+}
+
+/* Minimize editor panels when preview is expanded */
+.editor-panels.minimized-panels {
+  height: 25%; /* Takes 25% of the viewport height */
+  min-height: 150px; /* Ensure they don't become too small */
+  flex-shrink: 0; /* Prevent from shrinking further */
 }
 
 /* Individual Panels */
@@ -97,6 +111,7 @@ body {
   background-color: #252525;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #3a3a3a;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .panel-header h3 {
@@ -106,18 +121,36 @@ body {
   letter-spacing: 1px;
 }
 
+/* Language Selector in Panel Header */
+.language-selector-container {
+  flex-grow: 1; /* Allow selector to take available space */
+  display: flex;
+  justify-content: flex-start; /* Align to start */
+}
+
+
 /* Result Container */
 .result-container {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1; /* Takes remaining height */
   overflow: hidden;
+  transition: height 0.3s ease-out; /* Smooth transition for height change */
+  position: relative; /* For the cancel button positioning */
 }
+
+/* Expand result container when activeTab is 'preview' and isExpandedPreview is true */
+.result-container.expanded {
+  height: 75%; /* Takes 75% of the viewport height */
+}
+
 
 .result-tabs {
   display: flex;
   background-color: #252525;
   border-bottom: 1px solid #3a3a3a;
+  flex-shrink: 0; /* Prevent tabs from shrinking */
+  position: relative; /* For cancel button position */
 }
 
 .tab-button {
@@ -139,19 +172,42 @@ body {
   color: #ccc;
 }
 
-.clear-button {
-  margin-left: auto;
+.clear-button,
+.cancel-preview-button { /* Styled both clear and cancel buttons similarly */
+  margin-left: auto; /* Push to the right */
   background: none;
   border: none;
   color: #888;
   cursor: pointer;
   font-size: 0.8rem;
   padding: 0.5rem 1rem;
+  display: flex; /* For centering 'X' */
+  align-items: center;
+  justify-content: center;
 }
 
-.clear-button:hover {
+.clear-button:hover,
+.cancel-preview-button:hover {
   color: #f0f0f0;
 }
+
+.cancel-preview-button {
+  font-size: 1.6rem; /* Made bigger */
+  font-weight: bold;
+  color: #f0f0f0; /* Changed to white */
+  position: absolute; /* Position relative to result-tabs */
+  right: 10px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px 10px; /* Give it some padding */
+  border-radius: 4px;
+}
+
+.cancel-preview-button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Adjusted hover background for white text */
+  color: #fff;
+}
+
 
 /* Output Area */
 .output-content {
@@ -162,16 +218,21 @@ body {
   font-family: 'Consolas', 'Monaco', monospace;
   font-size: 0.9rem;
   line-height: 1.5;
+  white-space: pre-wrap; /* Preserve whitespace and wrap long lines */
+  word-wrap: break-word; /* Break long words */
 }
 
 /* Preview Area */
 .preview-content {
   flex: 1;
   background-color: white;
+  overflow: hidden; /* Ensure iframe doesn't overflow */
 }
 
 .preview-content iframe {
   border: none;
+  width: 100%;
+  height: 100%;
 }
 
 /* Footer */
@@ -181,23 +242,49 @@ body {
   text-align: center;
   font-size: 0.8rem;
   color: #888;
+  flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .editor-panels {
-    flex-direction: column;
-    height: auto;
+      flex-direction: column;
+      height: auto; /* Adjusted by content or specific heights below */
   }
-  
+
   .panel {
-    height: 200px;
-    border-right: none;
-    border-bottom: 1px solid #3a3a3a;
+      height: 150px; /* Smaller height for individual panels on mobile */
+      border-right: none;
+      border-bottom: 1px solid #3a3a3a;
   }
-  
+
+  .panel:last-child {
+      border-bottom: none; /* No bottom border on the last panel */
+  }
+
+  /* Adjust result container height for mobile (default) */
   .result-container {
-    height: 300px;
+      height: 300px;
+  }
+
+  /* Adjust heights for mobile when preview is expanded */
+  .code-editor-container.preview-expanded .editor-panels {
+      height: 100px; /* Even smaller panels when preview is expanded on mobile */
+  }
+
+  .code-editor-container.preview-expanded .result-container {
+      height: calc(100vh - 100px - 40px); /* Full height minus header and footer */
+      /* Header height: 0.8rem * 2 + padding (approx 40px)
+      Footer height: 0.6rem * 2 + padding (approx 30px)
+      Adjust calc as needed */
+      height: 75vh; /* Or a fixed height, e.g., 500px, depending on desired mobile behavior */
+  }
+
+  .cancel-preview-button {
+      position: static; /* Position normally within flexbox */
+      transform: none; /* Remove transform */
+      margin-left: auto; /* Push to right */
+      order: 1; /* Place it after other buttons */
   }
 }
 
