@@ -1,2 +1,0 @@
-This is a test line from your Node.js editor!
-Another line for booboo2.txt.
