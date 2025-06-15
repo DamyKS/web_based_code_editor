@@ -2,3 +2,4 @@
 node_modules
 play
 db.sqlite3
+venv
