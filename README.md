@@ -66,7 +66,7 @@ Ensure you have the following installed:
 # git clone <your-repo-url>
 # cd <your-project-directory>
 
-cd backend_project_name  # Replace with your actual backend directory name
+cd backend  
 
 # Create a Python virtual environment
 python -m venv venv
@@ -94,7 +94,7 @@ python manage.py runserver
 Build Docker images for each language interpreter:
 
 ```bash
-cd path/to/your/docker_executors  # Adjust this path
+cd docker_executors 
 
 # Python
 docker build -t python-executor -f python.Dockerfile .
@@ -116,7 +116,7 @@ docker images
 In a new terminal:
 
 ```bash
-cd backend_project_name  # Replace with your actual backend directory name
+cd backend
 
 # Activate environment
 .\venv\Scripts\activate  # Windows
@@ -134,7 +134,7 @@ celery -A your_app_name worker -l info --pool=solo
 In a new terminal:
 
 ```bash
-cd frontend_project_name  # Replace with your actual frontend directory name
+cd frontend/online-code-editor
 
 # Install dependencies
 npm install  # or yarn install
@@ -152,9 +152,6 @@ npm start  # or yarn start
 5. View output or errors in the output panel.
 6. Toggle light/dark theme as preferred.
 
-## 🤝 Contributing
-
-Contributions are welcome! Please fork the repo and open a pull request with your improvements.
 
 ## 📄 License
 
