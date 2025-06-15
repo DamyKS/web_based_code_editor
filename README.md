@@ -155,4 +155,4 @@ npm start  # or yarn start
 
 ## 📄 License
 
-This project is open-source under the [MIT License](LICENSE.md).
+This project is open-source under the [MIT License]
